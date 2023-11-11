@@ -1,0 +1,1055 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet-svg-shape-markers.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/taller2sig3_mnccomuna22_1.js"></script>
+        <script src="data/taller2sig3_mncvulnerabilidad_agua_2.js"></script>
+        <script src="data/ecosistema_GeoJ_3.js"></script>
+        <script src="data/taller2sig3_mnccobertura_uso_suelo_4.js"></script>
+        <script src="data/taller2sig3_mnczonas_verdes_5.js"></script>
+        <script src="data/taller2sig3_mncredhidrica_6.js"></script>
+        <script src="data/taller2sig3_mncdrenaje_subzona_hidrico_7.js"></script>
+        <script src="data/taller2sig3_mncdagma_hid_sup_sitios_criticos_8.js"></script>
+        <script src="data/taller2sig3_mncavistamiento_de_especies_9.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:18, minZoom:9
+        }).fitBounds([[3.3307409944620003,-76.56305096811879],[3.3731422994739932,-76.49898863083104]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_GoogleRoad_0');
+        map.getPane('pane_GoogleRoad_0').style.zIndex = 400;
+        var layer_GoogleRoad_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleRoad_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.google.at/permissions/geoguidelines/attr-guide.html">Map data ©2015 Google</a>',
+            minZoom: 9,
+            maxZoom: 18,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_GoogleRoad_0;
+        map.addLayer(layer_GoogleRoad_0);
+        function pop_taller2sig3_mnccomuna22_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['comuna'] !== null ? autolinker.link(feature.properties['comuna'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['nombre'] !== null ? autolinker.link(feature.properties['nombre'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['shape_leng'] !== null ? autolinker.link(feature.properties['shape_leng'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['shape_area'] !== null ? autolinker.link(feature.properties['shape_area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_taller2sig3_mnccomuna22_1_0() {
+            return {
+                pane: 'pane_taller2sig3_mnccomuna22_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(243,166,178,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_taller2sig3_mnccomuna22_1');
+        map.getPane('pane_taller2sig3_mnccomuna22_1').style.zIndex = 401;
+        map.getPane('pane_taller2sig3_mnccomuna22_1').style['mix-blend-mode'] = 'normal';
+        var layer_taller2sig3_mnccomuna22_1 = new L.geoJson(json_taller2sig3_mnccomuna22_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_taller2sig3_mnccomuna22_1',
+            layerName: 'layer_taller2sig3_mnccomuna22_1',
+            pane: 'pane_taller2sig3_mnccomuna22_1',
+            onEachFeature: pop_taller2sig3_mnccomuna22_1,
+            style: style_taller2sig3_mnccomuna22_1_0,
+        });
+        bounds_group.addLayer(layer_taller2sig3_mnccomuna22_1);
+        map.addLayer(layer_taller2sig3_mnccomuna22_1);
+        function pop_taller2sig3_mncvulnerabilidad_agua_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>areas</strong><br />' + (feature.properties['areas'] !== null ? autolinker.link(feature.properties['areas'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>perimetro</strong><br />' + (feature.properties['perimetro'] !== null ? autolinker.link(feature.properties['perimetro'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>vulnerabilidad</strong><br />' + (feature.properties['vulnerabilidad'] !== null ? autolinker.link(feature.properties['vulnerabilidad'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+        function style_taller2sig3_mncvulnerabilidad_agua_2_0(feature) {
+            var context = {
+                feature: feature,
+                variables: {}
+            };
+            // Start of if blocks and style check logic
+            if (exp_taller2sig3_mncvulnerabilidad_agua_2rule0_eval_expression(context)) {
+                  return {
+                pane: 'pane_taller2sig3_mncvulnerabilidad_agua_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,127,0,1.0)',
+                interactive: true,
+            };
+                }
+                else if (exp_taller2sig3_mncvulnerabilidad_agua_2rule1_eval_expression(context)) {
+                  return {
+                pane: 'pane_taller2sig3_mncvulnerabilidad_agua_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(38,238,88,1.0)',
+                interactive: true,
+            };
+                }
+                else if (exp_taller2sig3_mncvulnerabilidad_agua_2rule2_eval_expression(context)) {
+                  return {
+                pane: 'pane_taller2sig3_mncvulnerabilidad_agua_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,26,28,1.0)',
+                interactive: true,
+            };
+                }
+                else if (exp_taller2sig3_mncvulnerabilidad_agua_2rule3_eval_expression(context)) {
+                  return {
+                pane: 'pane_taller2sig3_mncvulnerabilidad_agua_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(244,237,1,1.0)',
+                interactive: true,
+            };
+                }
+            else {
+                return {fill: false, stroke: false};
+            }
+        }
+        map.createPane('pane_taller2sig3_mncvulnerabilidad_agua_2');
+        map.getPane('pane_taller2sig3_mncvulnerabilidad_agua_2').style.zIndex = 402;
+        map.getPane('pane_taller2sig3_mncvulnerabilidad_agua_2').style['mix-blend-mode'] = 'normal';
+        var layer_taller2sig3_mncvulnerabilidad_agua_2 = new L.geoJson(json_taller2sig3_mncvulnerabilidad_agua_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_taller2sig3_mncvulnerabilidad_agua_2',
+            layerName: 'layer_taller2sig3_mncvulnerabilidad_agua_2',
+            pane: 'pane_taller2sig3_mncvulnerabilidad_agua_2',
+            onEachFeature: pop_taller2sig3_mncvulnerabilidad_agua_2,
+            style: style_taller2sig3_mncvulnerabilidad_agua_2_0,
+        });
+        bounds_group.addLayer(layer_taller2sig3_mncvulnerabilidad_agua_2);
+        map.addLayer(layer_taller2sig3_mncvulnerabilidad_agua_2);
+        function pop_ecosistema_GeoJ_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['COD_SU2004'] !== null ? autolinker.link(feature.properties['COD_SU2004'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>BIOMA1996</strong><br />' + (feature.properties['BIOMA1996'] !== null ? autolinker.link(feature.properties['BIOMA1996'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>BIOMA2010</strong><br />' + (feature.properties['BIOMA2010'] !== null ? autolinker.link(feature.properties['BIOMA2010'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['COD_ECOSIS'] !== null ? autolinker.link(feature.properties['COD_ECOSIS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NOM_ECOSIS'] !== null ? autolinker.link(feature.properties['NOM_ECOSIS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ZONA'] !== null ? autolinker.link(feature.properties['ZONA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ANNO_ECO_E'] !== null ? autolinker.link(feature.properties['ANNO_ECO_E'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ANNO_ECO_A'] !== null ? autolinker.link(feature.properties['ANNO_ECO_A'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ANNO_ECO_G'] !== null ? autolinker.link(feature.properties['ANNO_ECO_G'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SHAPE_AREA'] !== null ? autolinker.link(feature.properties['SHAPE_AREA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SHAPE_LEN'] !== null ? autolinker.link(feature.properties['SHAPE_LEN'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+        function style_ecosistema_GeoJ_3_0(feature) {
+            var context = {
+                feature: feature,
+                variables: {}
+            };
+            // Start of if blocks and style check logic
+            if (exp_ecosistema_GeoJ_3rule0_eval_expression(context)) {
+                  return {
+                pane: 'pane_ecosistema_GeoJ_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(247,252,245,1.0)',
+                interactive: true,
+            };
+                }
+                else if (exp_ecosistema_GeoJ_3rule1_eval_expression(context)) {
+                  return {
+                pane: 'pane_ecosistema_GeoJ_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,68,27,1.0)',
+                interactive: true,
+            };
+                }
+            else {
+                return {fill: false, stroke: false};
+            }
+        }
+        map.createPane('pane_ecosistema_GeoJ_3');
+        map.getPane('pane_ecosistema_GeoJ_3').style.zIndex = 403;
+        map.getPane('pane_ecosistema_GeoJ_3').style['mix-blend-mode'] = 'normal';
+        var layer_ecosistema_GeoJ_3 = new L.geoJson(json_ecosistema_GeoJ_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_ecosistema_GeoJ_3',
+            layerName: 'layer_ecosistema_GeoJ_3',
+            pane: 'pane_ecosistema_GeoJ_3',
+            onEachFeature: pop_ecosistema_GeoJ_3,
+            style: style_ecosistema_GeoJ_3_0,
+        });
+        bounds_group.addLayer(layer_ecosistema_GeoJ_3);
+        map.addLayer(layer_ecosistema_GeoJ_3);
+        function pop_taller2sig3_mnccobertura_uso_suelo_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cod_cob_ba'] !== null ? autolinker.link(feature.properties['cod_cob_ba'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cod_cob25'] !== null ? autolinker.link(feature.properties['cod_cob25'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cod_uso25'] !== null ? autolinker.link(feature.properties['cod_uso25'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cod_int_cv'] !== null ? autolinker.link(feature.properties['cod_int_cv'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cod_corine'] !== null ? autolinker.link(feature.properties['cod_corine'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cod_cuenca'] !== null ? autolinker.link(feature.properties['cod_cuenca'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['insumo'] !== null ? autolinker.link(feature.properties['insumo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['anno_estud'] !== null ? autolinker.link(feature.properties['anno_estud'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['anno_ajust'] !== null ? autolinker.link(feature.properties['anno_ajust'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['anno_gesti'] !== null ? autolinker.link(feature.properties['anno_gesti'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['orig_fid'] !== null ? autolinker.link(feature.properties['orig_fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['esc_lev'] !== null ? autolinker.link(feature.properties['esc_lev'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['objectid_1'] !== null ? autolinker.link(feature.properties['objectid_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>cod_cob500</strong><br />' + (feature.properties['cod_cob500'] !== null ? autolinker.link(feature.properties['cod_cob500'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['nom_cob500'] !== null ? autolinker.link(feature.properties['nom_cob500'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sim_cob500'] !== null ? autolinker.link(feature.properties['sim_cob500'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cod_cob250'] !== null ? autolinker.link(feature.properties['cod_cob250'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>nom_cob250</strong><br />' + (feature.properties['nom_cob250'] !== null ? autolinker.link(feature.properties['nom_cob250'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sim_cob250'] !== null ? autolinker.link(feature.properties['sim_cob250'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cod_cob100'] !== null ? autolinker.link(feature.properties['cod_cob100'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>nom_cob100</strong><br />' + (feature.properties['nom_cob100'] !== null ? autolinker.link(feature.properties['nom_cob100'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sim_cob100'] !== null ? autolinker.link(feature.properties['sim_cob100'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cod_cob50'] !== null ? autolinker.link(feature.properties['cod_cob50'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>nom_cob50</strong><br />' + (feature.properties['nom_cob50'] !== null ? autolinker.link(feature.properties['nom_cob50'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sim_cob50'] !== null ? autolinker.link(feature.properties['sim_cob50'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cod_cob25_'] !== null ? autolinker.link(feature.properties['cod_cob25_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>nom_cob25</strong><br />' + (feature.properties['nom_cob25'] !== null ? autolinker.link(feature.properties['nom_cob25'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sim_cob25'] !== null ? autolinker.link(feature.properties['sim_cob25'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cod_frag'] !== null ? autolinker.link(feature.properties['cod_frag'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['factor_c'] !== null ? autolinker.link(feature.properties['factor_c'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cpnm'] !== null ? autolinker.link(feature.properties['cpnm'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>shape_area</strong><br />' + (feature.properties['shape_area'] !== null ? autolinker.link(feature.properties['shape_area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>shape_len</strong><br />' + (feature.properties['shape_len'] !== null ? autolinker.link(feature.properties['shape_len'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_taller2sig3_mnccobertura_uso_suelo_4_0(feature) {
+            switch(String(feature.properties['nom_cob500'])) {
+                case 'Superficies construidas':
+                    return {
+                pane: 'pane_taller2sig3_mnccobertura_uso_suelo_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(247,252,245,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Superficies de agua':
+                    return {
+                pane: 'pane_taller2sig3_mnccobertura_uso_suelo_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(201,234,194,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Superficies naturales y seminaturales':
+                    return {
+                pane: 'pane_taller2sig3_mnccobertura_uso_suelo_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(123,199,124,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Superficies plantadas':
+                    return {
+                pane: 'pane_taller2sig3_mnccobertura_uso_suelo_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(42,146,75,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_taller2sig3_mnccobertura_uso_suelo_4');
+        map.getPane('pane_taller2sig3_mnccobertura_uso_suelo_4').style.zIndex = 404;
+        map.getPane('pane_taller2sig3_mnccobertura_uso_suelo_4').style['mix-blend-mode'] = 'normal';
+        var layer_taller2sig3_mnccobertura_uso_suelo_4 = new L.geoJson(json_taller2sig3_mnccobertura_uso_suelo_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_taller2sig3_mnccobertura_uso_suelo_4',
+            layerName: 'layer_taller2sig3_mnccobertura_uso_suelo_4',
+            pane: 'pane_taller2sig3_mnccobertura_uso_suelo_4',
+            onEachFeature: pop_taller2sig3_mnccobertura_uso_suelo_4,
+            style: style_taller2sig3_mnccobertura_uso_suelo_4_0,
+        });
+        bounds_group.addLayer(layer_taller2sig3_mnccobertura_uso_suelo_4);
+        map.addLayer(layer_taller2sig3_mnccobertura_uso_suelo_4);
+        function pop_taller2sig3_mnczonas_verdes_5(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>tipo_de_utilidad</strong><br />' + (feature.properties['tipo_de_utilidad'] !== null ? autolinker.link(feature.properties['tipo_de_utilidad'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>areas</strong><br />' + (feature.properties['areas'] !== null ? autolinker.link(feature.properties['areas'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>perimetro</strong><br />' + (feature.properties['perimetro'] !== null ? autolinker.link(feature.properties['perimetro'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_taller2sig3_mnczonas_verdes_5_0() {
+            return {
+                pane: 'pane_taller2sig3_mnczonas_verdes_5',
+                opacity: 1,
+                color: 'rgba(169,240,16,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_taller2sig3_mnczonas_verdes_5');
+        map.getPane('pane_taller2sig3_mnczonas_verdes_5').style.zIndex = 405;
+        map.getPane('pane_taller2sig3_mnczonas_verdes_5').style['mix-blend-mode'] = 'normal';
+        var layer_taller2sig3_mnczonas_verdes_5 = new L.geoJson(json_taller2sig3_mnczonas_verdes_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_taller2sig3_mnczonas_verdes_5',
+            layerName: 'layer_taller2sig3_mnczonas_verdes_5',
+            pane: 'pane_taller2sig3_mnczonas_verdes_5',
+            onEachFeature: pop_taller2sig3_mnczonas_verdes_5,
+            style: style_taller2sig3_mnczonas_verdes_5_0,
+        });
+        bounds_group.addLayer(layer_taller2sig3_mnczonas_verdes_5);
+        map.addLayer(layer_taller2sig3_mnczonas_verdes_5);
+        function pop_taller2sig3_mncredhidrica_6(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cod_drenaj'] !== null ? autolinker.link(feature.properties['cod_drenaj'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['nom1_drena'] !== null ? autolinker.link(feature.properties['nom1_drena'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['nom2_drena'] !== null ? autolinker.link(feature.properties['nom2_drena'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['tipo_drena'] !== null ? autolinker.link(feature.properties['tipo_drena'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['estado_dre'] !== null ? autolinker.link(feature.properties['estado_dre'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['vertiente'] !== null ? autolinker.link(feature.properties['vertiente'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cod_cuenca'] !== null ? autolinker.link(feature.properties['cod_cuenca'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>nom_cuenca</strong><br />' + (feature.properties['nom_cuenca'] !== null ? autolinker.link(feature.properties['nom_cuenca'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cod_area_d'] !== null ? autolinker.link(feature.properties['cod_area_d'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['escala'] !== null ? autolinker.link(feature.properties['escala'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['nivel_visu'] !== null ? autolinker.link(feature.properties['nivel_visu'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fuente'] !== null ? autolinker.link(feature.properties['fuente'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ruleid'] !== null ? autolinker.link(feature.properties['ruleid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['id_drenaje'] !== null ? autolinker.link(feature.properties['id_drenaje'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['monitoreo'] !== null ? autolinker.link(feature.properties['monitoreo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cod_area_1'] !== null ? autolinker.link(feature.properties['cod_area_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['cod_tramo'] !== null ? autolinker.link(feature.properties['cod_tramo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['num_tramo'] !== null ? autolinker.link(feature.properties['num_tramo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['clase'] !== null ? autolinker.link(feature.properties['clase'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['shape_len'] !== null ? autolinker.link(feature.properties['shape_len'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_taller2sig3_mncredhidrica_6_0() {
+            return {
+                pane: 'pane_taller2sig3_mncredhidrica_6',
+                opacity: 1,
+                color: 'rgba(15,219,255,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_taller2sig3_mncredhidrica_6');
+        map.getPane('pane_taller2sig3_mncredhidrica_6').style.zIndex = 406;
+        map.getPane('pane_taller2sig3_mncredhidrica_6').style['mix-blend-mode'] = 'normal';
+        var layer_taller2sig3_mncredhidrica_6 = new L.geoJson(json_taller2sig3_mncredhidrica_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_taller2sig3_mncredhidrica_6',
+            layerName: 'layer_taller2sig3_mncredhidrica_6',
+            pane: 'pane_taller2sig3_mncredhidrica_6',
+            onEachFeature: pop_taller2sig3_mncredhidrica_6,
+            style: style_taller2sig3_mncredhidrica_6_0,
+        });
+        bounds_group.addLayer(layer_taller2sig3_mncredhidrica_6);
+        map.addLayer(layer_taller2sig3_mncredhidrica_6);
+        function pop_taller2sig3_mncdrenaje_subzona_hidrico_7(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">longitud</th>\
+                        <td>' + (feature.properties['longitud'] !== null ? autolinker.link(feature.properties['longitud'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">nombra</th>\
+                        <td>' + (feature.properties['nombra'] !== null ? autolinker.link(feature.properties['nombra'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">caudal_ecologico</th>\
+                        <td>' + (feature.properties['caudal_ecologico'] !== null ? autolinker.link(feature.properties['caudal_ecologico'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['vulnerabilidad_id'] !== null ? autolinker.link(feature.properties['vulnerabilidad_id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_taller2sig3_mncdrenaje_subzona_hidrico_7_0(feature) {
+            switch(String(feature.properties['nombra'])) {
+                case 'drenaje':
+                    return {
+                pane: 'pane_taller2sig3_mncdrenaje_subzona_hidrico_7',
+                opacity: 1,
+                color: 'rgba(62,35,196,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'jarillon':
+                    return {
+                pane: 'pane_taller2sig3_mncdrenaje_subzona_hidrico_7',
+                opacity: 1,
+                color: 'rgba(175,209,231,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'rio':
+                    return {
+                pane: 'pane_taller2sig3_mncdrenaje_subzona_hidrico_7',
+                opacity: 1,
+                color: 'rgba(62,142,196,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_taller2sig3_mncdrenaje_subzona_hidrico_7');
+        map.getPane('pane_taller2sig3_mncdrenaje_subzona_hidrico_7').style.zIndex = 407;
+        map.getPane('pane_taller2sig3_mncdrenaje_subzona_hidrico_7').style['mix-blend-mode'] = 'normal';
+        var layer_taller2sig3_mncdrenaje_subzona_hidrico_7 = new L.geoJson(json_taller2sig3_mncdrenaje_subzona_hidrico_7, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_taller2sig3_mncdrenaje_subzona_hidrico_7',
+            layerName: 'layer_taller2sig3_mncdrenaje_subzona_hidrico_7',
+            pane: 'pane_taller2sig3_mncdrenaje_subzona_hidrico_7',
+            onEachFeature: pop_taller2sig3_mncdrenaje_subzona_hidrico_7,
+            style: style_taller2sig3_mncdrenaje_subzona_hidrico_7_0,
+        });
+        bounds_group.addLayer(layer_taller2sig3_mncdrenaje_subzona_hidrico_7);
+        map.addLayer(layer_taller2sig3_mncdrenaje_subzona_hidrico_7);
+        function pop_taller2sig3_mncdagma_hid_sup_sitios_criticos_8(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['__oid'] !== null ? autolinker.link(feature.properties['__oid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['__gid'] !== null ? autolinker.link(feature.properties['__gid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['scid'] !== null ? autolinker.link(feature.properties['scid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>scfecha</strong><br />' + (feature.properties['scfecha'] !== null ? autolinker.link(feature.properties['scfecha'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['scencuest'] !== null ? autolinker.link(feature.properties['scencuest'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">scdirecc</th>\
+                        <td>' + (feature.properties['scdirecc'] !== null ? autolinker.link(feature.properties['scdirecc'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['scnompre'] !== null ? autolinker.link(feature.properties['scnompre'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['scidtipopr'] !== null ? autolinker.link(feature.properties['scidtipopr'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sctipopre'] !== null ? autolinker.link(feature.properties['sctipopre'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['scfuehid'] !== null ? autolinker.link(feature.properties['scfuehid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['scidtipoes'] !== null ? autolinker.link(feature.properties['scidtipoes'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sctipoestr'] !== null ? autolinker.link(feature.properties['sctipoestr'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['scidtiposi'] !== null ? autolinker.link(feature.properties['scidtiposi'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sctiposit'] !== null ? autolinker.link(feature.properties['sctiposit'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>scconcau</strong><br />' + (feature.properties['scconcau'] !== null ? autolinker.link(feature.properties['scconcau'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['scidtipoca'] !== null ? autolinker.link(feature.properties['scidtipoca'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sctipocau'] !== null ? autolinker.link(feature.properties['sctipocau'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['scidsevsit'] !== null ? autolinker.link(feature.properties['scidsevsit'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>scsevsit</strong><br />' + (feature.properties['scsevsit'] !== null ? autolinker.link(feature.properties['scsevsit'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>scfreceve</strong><br />' + (feature.properties['scfreceve'] !== null ? autolinker.link(feature.properties['scfreceve'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['scultano'] !== null ? autolinker.link(feature.properties['scultano'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sclongsit'] !== null ? autolinker.link(feature.properties['sclongsit'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sclatsit'] !== null ? autolinker.link(feature.properties['sclatsit'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['scfoto1'] !== null ? autolinker.link(feature.properties['scfoto1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['scfoto2'] !== null ? autolinker.link(feature.properties['scfoto2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['scobserva'] !== null ? autolinker.link(feature.properties['scobserva'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['scficha'] !== null ? autolinker.link(feature.properties['scficha'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_taller2sig3_mncdagma_hid_sup_sitios_criticos_8_0() {
+            return {
+                pane: 'pane_taller2sig3_mncdagma_hid_sup_sitios_criticos_8',
+                radius: 1.6,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(125,139,143,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_taller2sig3_mncdagma_hid_sup_sitios_criticos_8');
+        map.getPane('pane_taller2sig3_mncdagma_hid_sup_sitios_criticos_8').style.zIndex = 408;
+        map.getPane('pane_taller2sig3_mncdagma_hid_sup_sitios_criticos_8').style['mix-blend-mode'] = 'normal';
+        var layer_taller2sig3_mncdagma_hid_sup_sitios_criticos_8 = new L.geoJson(json_taller2sig3_mncdagma_hid_sup_sitios_criticos_8, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_taller2sig3_mncdagma_hid_sup_sitios_criticos_8',
+            layerName: 'layer_taller2sig3_mncdagma_hid_sup_sitios_criticos_8',
+            pane: 'pane_taller2sig3_mncdagma_hid_sup_sitios_criticos_8',
+            onEachFeature: pop_taller2sig3_mncdagma_hid_sup_sitios_criticos_8,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_taller2sig3_mncdagma_hid_sup_sitios_criticos_8_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_taller2sig3_mncdagma_hid_sup_sitios_criticos_8);
+        map.addLayer(layer_taller2sig3_mncdagma_hid_sup_sitios_criticos_8);
+        function pop_taller2sig3_mncavistamiento_de_especies_9(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">nombre</th>\
+                        <td>' + (feature.properties['nombre'] !== null ? autolinker.link(feature.properties['nombre'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">especies</th>\
+                        <td>' + (feature.properties['especies'] !== null ? autolinker.link(feature.properties['especies'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">animales_observado</th>\
+                        <td>' + (feature.properties['animales_observado'] !== null ? autolinker.link(feature.properties['animales_observado'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['zonas_verdes_id'] !== null ? autolinker.link(feature.properties['zonas_verdes_id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_taller2sig3_mncavistamiento_de_especies_9_0(feature) {
+            switch(String(feature.properties['especies'])) {
+                case 'anfibios':
+                    return {
+                pane: 'pane_taller2sig3_mncavistamiento_de_especies_9',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(48,18,59,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'aves':
+                    return {
+                pane: 'pane_taller2sig3_mncavistamiento_de_especies_9',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(40,188,235,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'mamiferos':
+                    return {
+                pane: 'pane_taller2sig3_mncavistamiento_de_especies_9',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(164,252,60,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'reptiles':
+                    return {
+                pane: 'pane_taller2sig3_mncavistamiento_de_especies_9',
+                shape: 'diamond',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(251,126,33,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_taller2sig3_mncavistamiento_de_especies_9');
+        map.getPane('pane_taller2sig3_mncavistamiento_de_especies_9').style.zIndex = 409;
+        map.getPane('pane_taller2sig3_mncavistamiento_de_especies_9').style['mix-blend-mode'] = 'normal';
+        var layer_taller2sig3_mncavistamiento_de_especies_9 = new L.geoJson(json_taller2sig3_mncavistamiento_de_especies_9, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_taller2sig3_mncavistamiento_de_especies_9',
+            layerName: 'layer_taller2sig3_mncavistamiento_de_especies_9',
+            pane: 'pane_taller2sig3_mncavistamiento_de_especies_9',
+            onEachFeature: pop_taller2sig3_mncavistamiento_de_especies_9,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.shapeMarker(latlng, style_taller2sig3_mncavistamiento_de_especies_9_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_taller2sig3_mncavistamiento_de_especies_9);
+        map.addLayer(layer_taller2sig3_mncavistamiento_de_especies_9);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'taller2sig3_mnc:avistamiento_de_especies<br /><table><tr><td style="text-align: center;"><img src="legend/taller2sig3_mncavistamiento_de_especies_9_anfibios0.png" /></td><td>anfibios</td></tr><tr><td style="text-align: center;"><img src="legend/taller2sig3_mncavistamiento_de_especies_9_aves1.png" /></td><td>aves</td></tr><tr><td style="text-align: center;"><img src="legend/taller2sig3_mncavistamiento_de_especies_9_mamiferos2.png" /></td><td>mamiferos</td></tr><tr><td style="text-align: center;"><img src="legend/taller2sig3_mncavistamiento_de_especies_9_reptiles3.png" /></td><td>reptiles</td></tr></table>': layer_taller2sig3_mncavistamiento_de_especies_9,'<img src="legend/taller2sig3_mncdagma_hid_sup_sitios_criticos_8.png" /> taller2sig3_mnc:dagma_hid_sup_sitios_criticos': layer_taller2sig3_mncdagma_hid_sup_sitios_criticos_8,'taller2sig3_mnc:drenaje_subzona_hidrico<br /><table><tr><td style="text-align: center;"><img src="legend/taller2sig3_mncdrenaje_subzona_hidrico_7_drenaje0.png" /></td><td>drenaje</td></tr><tr><td style="text-align: center;"><img src="legend/taller2sig3_mncdrenaje_subzona_hidrico_7_jarillon1.png" /></td><td>jarillon</td></tr><tr><td style="text-align: center;"><img src="legend/taller2sig3_mncdrenaje_subzona_hidrico_7_rio2.png" /></td><td>rio</td></tr></table>': layer_taller2sig3_mncdrenaje_subzona_hidrico_7,'<img src="legend/taller2sig3_mncredhidrica_6.png" /> taller2sig3_mnc:redhidrica': layer_taller2sig3_mncredhidrica_6,'<img src="legend/taller2sig3_mnczonas_verdes_5.png" /> taller2sig3_mnc:zonas_verdes': layer_taller2sig3_mnczonas_verdes_5,'taller2sig3_mnc:cobertura_uso_suelo<br /><table><tr><td style="text-align: center;"><img src="legend/taller2sig3_mnccobertura_uso_suelo_4_Superficiesconstruidas0.png" /></td><td>Superficies construidas</td></tr><tr><td style="text-align: center;"><img src="legend/taller2sig3_mnccobertura_uso_suelo_4_Superficiesdeagua1.png" /></td><td>Superficies de agua</td></tr><tr><td style="text-align: center;"><img src="legend/taller2sig3_mnccobertura_uso_suelo_4_Superficiesnaturalesyseminaturales2.png" /></td><td>Superficies naturales y seminaturales</td></tr><tr><td style="text-align: center;"><img src="legend/taller2sig3_mnccobertura_uso_suelo_4_Superficiesplantadas3.png" /></td><td>Superficies plantadas</td></tr></table>': layer_taller2sig3_mnccobertura_uso_suelo_4,'ecosistema_GeoJ<br /><table><tr><td style="text-align: center;"><img src="legend/ecosistema_GeoJ_3_Bosquecalidohumedoenpiedemontecoluvioaluvial0.png" /></td><td>Bosque calido humedo en piedemonte coluvio-aluvial</td></tr><tr><td style="text-align: center;"><img src="legend/ecosistema_GeoJ_3_Bosquecalidosecoenpiedemontealuvial1.png" /></td><td>Bosque calido seco en piedemonte aluvial</td></tr></table>': layer_ecosistema_GeoJ_3,'taller2sig3_mnc:vulnerabilidad_agua<br /><table><tr><td style="text-align: center;"><img src="legend/taller2sig3_mncvulnerabilidad_agua_2_alta0.png" /></td><td>alta</td></tr><tr><td style="text-align: center;"><img src="legend/taller2sig3_mncvulnerabilidad_agua_2_baja1.png" /></td><td>baja</td></tr><tr><td style="text-align: center;"><img src="legend/taller2sig3_mncvulnerabilidad_agua_2_extrema2.png" /></td><td>extrema</td></tr><tr><td style="text-align: center;"><img src="legend/taller2sig3_mncvulnerabilidad_agua_2_moderada3.png" /></td><td>moderada</td></tr></table>': layer_taller2sig3_mncvulnerabilidad_agua_2,'<img src="legend/taller2sig3_mnccomuna22_1.png" /> taller2sig3_mnc:comuna22': layer_taller2sig3_mnccomuna22_1,"Google Road": layer_GoogleRoad_0,}).addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
