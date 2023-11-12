@@ -120,21 +120,22 @@
                 </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
+            function style_taller2sig3_mnccomuna22_1_0() {
+                return {
+                    pane: 'pane_taller2sig3_mnccomuna22_1',
+                    opacity: 1,
+                    color: 'rgba(200,50,100,1.0)', // Cambié el color de la línea a un tono rojizo
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    weight: 4.0, 
+                    fill: true,
+                    fillOpacity: 1,
+                    fillColor: 'rgba(100,200,50,1.0)', // El relleno ahora es de un tono verdoso
+                    interactive: true,
+    };
+}
 
-        function style_taller2sig3_mnccomuna22_1_0() {
-            return {
-                pane: 'pane_taller2sig3_mnccomuna22_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 4.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(243,166,178,1.0)',
-                interactive: true,
-            }
         }
         map.createPane('pane_taller2sig3_mnccomuna22_1');
         map.getPane('pane_taller2sig3_mnccomuna22_1').style.zIndex = 401;
@@ -726,21 +727,34 @@
                 </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
-
-        function style_taller2sig3_mncdrenaje_subzona_hidrico_7_0(feature) {
-            switch(String(feature.properties['nombra'])) {
-                case 'drenaje':
-                    return {
-                pane: 'pane_taller2sig3_mncdrenaje_subzona_hidrico_7',
-                opacity: 1,
-                color: 'rgba(62,35,196,1.0)',
-                dashArray: '',
-                lineCap: 'square',
-                lineJoin: 'bevel',
-                weight: 2.0,
-                fillOpacity: 0,
-                interactive: true,
+            function style_taller2sig3_mncdrenaje_subzona_hidrico_7_0(feature) {
+                switch (String(feature.properties['nombra'])) {
+                    case 'drenaje':
+                        return {
+                            pane: 'pane_taller2sig3_mncdrenaje_subzona_hidrico_7',
+                            opacity: 1,
+                            color: 'rgba(255,0,0,1.0)', // Cambié el color de la línea a rojo
+                            dashArray: '',
+                            lineCap: 'round', // Cambié el estilo del extremo de la línea a redondeado
+                            lineJoin: 'round', // Establecí la unión de líneas como redondeada
+                            weight: 4.0, // Aumenté el grosor de la línea
+                            fillOpacity: 0,
+                            interactive: true,
+                        };
+                    default:
+                        // En caso de otro tipo, puedes establecer un estilo predeterminado
+                        return {
+                            color: 'rgba(62,35,196,1.0)',
+                            dashArray: '',
+                            lineCap: 'square',
+                            lineJoin: 'bevel',
+                            weight: 2.0,
+                            fillOpacity: 0,
+                            interactive: true,
+                        };
+                }
             }
+
                     break;
                 case 'jarillon':
                     return {
